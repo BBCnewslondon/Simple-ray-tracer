@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = 
+CXX_INCLUDES = -I/workspaces/codespaces-blank/.
 
-CXX_FLAGS = 
+CXX_FLAGS = -std=gnu++11
 
