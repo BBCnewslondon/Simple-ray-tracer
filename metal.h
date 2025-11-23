@@ -10,16 +10,20 @@ class metal : public material {
 
         virtual bool scatter(
             const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered
-        ) const override {
-            vec3 reflected = reflect(unit_vector(r_in.direction()), rec.normal);
-            scattered = ray(rec.p, reflected + fuzz*random_unit_vector());
-            attenuation = albedo;
-            return (dot(scattered.direction(), rec.normal) > 0);
-        }
+        ) const override;
 
     public:
         color albedo;
         double fuzz;
 };
+
+inline bool metal::scatter(
+    const ray& r_in, const hit_record& rec, color& attenuation, ray& scattered
+) const {
+    vec3 reflected = reflect(unit_vector(r_in.direction()), rec.normal);
+    scattered = ray(rec.p, reflected + fuzz*random_unit_vector());
+    attenuation = albedo;
+    return (dot(scattered.direction(), rec.normal) > 0);
+}
 
 #endif

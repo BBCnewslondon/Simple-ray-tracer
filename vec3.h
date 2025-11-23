@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <random>
 
 using std::sqrt;
 
@@ -105,8 +106,6 @@ inline bool near_zero(const vec3& v) {
     return (fabs(v.x()) < s) && (fabs(v.y()) < s) && (fabs(v.z()) < s);
 }
 
-#include <random>
-
 inline vec3 refract(const vec3& uv, const vec3& n, double etai_over_etat) {
     auto cos_theta = fmin(dot(-uv, n), 1.0);
     vec3 r_out_perp =  etai_over_etat * (uv + cos_theta*n);
@@ -129,6 +128,22 @@ inline vec3 random_unit_vector() {
     auto z = random_double() * 2 - 1;
     auto r = sqrt(1 - z*z);
     return vec3(r*cos(a), r*sin(a), z);
+}
+
+inline double degrees_to_radians(double degrees) {
+    return degrees * 3.1415926535897932385 / 180.0;
+}
+
+inline double random_double(double min, double max) {
+    return min + (max-min)*random_double();
+}
+
+inline vec3 random_in_unit_disk() {
+    while (true) {
+        auto p = vec3(random_double(-1,1), random_double(-1,1), 0);
+        if (p.length_squared() >= 1) continue;
+        return p;
+    }
 }
 
 #endif

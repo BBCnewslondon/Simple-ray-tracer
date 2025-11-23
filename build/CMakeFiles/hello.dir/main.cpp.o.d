@@ -172,11 +172,7 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/main.cpp \
  /workspaces/codespaces-blank/color.h \
  /workspaces/codespaces-blank/sphere.h \
  /workspaces/codespaces-blank/hittable.h \
- /workspaces/codespaces-blank/ray.h \
- /workspaces/codespaces-blank/material.h \
- /workspaces/codespaces-blank/lambertian.h \
- /workspaces/codespaces-blank/metal.h \
- /workspaces/codespaces-blank/dielectric.h /usr/include/c++/13/memory \
+ /workspaces/codespaces-blank/ray.h /usr/include/c++/13/memory \
  /usr/include/c++/13/bits/stl_tempbuf.h \
  /usr/include/c++/13/bits/stl_raw_storage_iter.h \
  /usr/include/c++/13/bits/align.h /usr/include/c++/13/bit \
@@ -190,4 +186,9 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/main.cpp \
  /usr/include/c++/13/bits/shared_ptr_atomic.h \
  /usr/include/c++/13/bits/atomic_base.h \
  /usr/include/c++/13/bits/atomic_lockfree_defines.h \
- /usr/include/c++/13/backward/auto_ptr.h
+ /usr/include/c++/13/backward/auto_ptr.h \
+ /workspaces/codespaces-blank/material.h \
+ /workspaces/codespaces-blank/lambertian.h \
+ /workspaces/codespaces-blank/metal.h \
+ /workspaces/codespaces-blank/dielectric.h \
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/omp.h
