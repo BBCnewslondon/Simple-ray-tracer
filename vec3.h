@@ -99,4 +99,36 @@ inline vec3 unit_vector(vec3 v) {
     return v / v.length();
 }
 
+inline bool near_zero(const vec3& v) {
+    // Return true if the vector is close to zero in all dimensions.
+    const auto s = 1e-8;
+    return (fabs(v.x()) < s) && (fabs(v.y()) < s) && (fabs(v.z()) < s);
+}
+
+#include <random>
+
+inline vec3 refract(const vec3& uv, const vec3& n, double etai_over_etat) {
+    auto cos_theta = fmin(dot(-uv, n), 1.0);
+    vec3 r_out_perp =  etai_over_etat * (uv + cos_theta*n);
+    vec3 r_out_parallel = -sqrt(fabs(1.0 - r_out_perp.length_squared())) * n;
+    return r_out_perp + r_out_parallel;
+}
+
+inline vec3 reflect(const vec3& v, const vec3& n) {
+    return v - 2*dot(v,n)*n;
+}
+
+inline double random_double() {
+    static std::uniform_real_distribution<double> distribution(0.0, 1.0);
+    static std::mt19937 generator;
+    return distribution(generator);
+}
+
+inline vec3 random_unit_vector() {
+    auto a = random_double() * 2 * 3.1415926535897932385;
+    auto z = random_double() * 2 - 1;
+    auto r = sqrt(1 - z*z);
+    return vec3(r*cos(a), r*sin(a), z);
+}
+
 #endif

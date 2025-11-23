@@ -2,26 +2,39 @@
 #include "color.h"
 #include "sphere.h"
 #include "hittable.h"
+#include "material.h"
+#include "lambertian.h"
+#include "metal.h"
+#include "dielectric.h"
 
 #include <iostream>
 #include <limits>
 #include <vector>
-#include <vector>
+#include <memory>
 
-color ray_color(const ray& r, const std::vector<hittable*>& world) {
+color ray_color(const ray& r, const std::vector<std::shared_ptr<hittable>>& world, int depth) {
     hit_record rec;
+
+    // If we've exceeded the ray bounce limit, no more light is gathered.
+    if (depth <= 0)
+        return color(0,0,0);
+
     bool hit_anything = false;
     auto closest_so_far = 1e10;
 
     for (const auto& object : world) {
-        if (object->hit(r, 0, closest_so_far, rec)) {
+        if (object->hit(r, 0.001, closest_so_far, rec)) {
             hit_anything = true;
             closest_so_far = rec.t;
         }
     }
 
     if (hit_anything) {
-        return 0.5 * (rec.normal + color(1,1,1));
+        ray scattered;
+        color attenuation;
+        if (rec.mat_ptr->scatter(r, rec, attenuation, scattered))
+            return attenuation * ray_color(scattered, world, depth-1);
+        return color(0,0,0);
     }
 
     vec3 unit_direction = unit_vector(r.direction());
@@ -47,8 +60,17 @@ int main() {
     auto lower_left_corner = origin - horizontal/2 - vertical/2 - vec3(0, 0, focal_length);
 
     // World
-    std::vector<hittable*> world;
-    world.push_back(new sphere(point3(0,0,-1), 0.5));
+    std::vector<std::shared_ptr<hittable>> world;
+
+    auto material_ground = std::make_shared<lambertian>(color(0.8, 0.8, 0.0));
+    auto material_center = std::make_shared<lambertian>(color(0.1, 0.2, 0.5));
+    auto material_left   = std::make_shared<dielectric>(1.5);
+    auto material_right  = std::make_shared<metal>(color(0.8, 0.6, 0.2), 0.0);
+
+    world.push_back(std::make_shared<sphere>(point3( 0.0, -100.5, -1.0), 100.0, material_ground.get()));
+    world.push_back(std::make_shared<sphere>(point3( 0.0,    0.0, -1.0),   0.5, material_center.get()));
+    world.push_back(std::make_shared<sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left.get()));
+    world.push_back(std::make_shared<sphere>(point3( 1.0,    0.0, -1.0),   0.5, material_right.get()));
 
     // Render
 
@@ -60,7 +82,7 @@ int main() {
             auto u = double(i) / (image_width-1);
             auto v = double(j) / (image_height-1);
             ray r(origin, lower_left_corner + u*horizontal + v*vertical - origin);
-            color pixel_color = ray_color(r, world);
+            color pixel_color = ray_color(r, world, 50);
             write_color(std::cout, pixel_color);
         }
     }
