@@ -22,6 +22,7 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
   /usr/include/c++/13/bits/basic_string.tcc \
   /usr/include/c++/13/bits/char_traits.h \
   /usr/include/c++/13/bits/charconv.h \
+  /usr/include/c++/13/bits/codecvt.h \
   /usr/include/c++/13/bits/concept_check.h \
   /usr/include/c++/13/bits/cpp_type_traits.h \
   /usr/include/c++/13/bits/cxxabi_forced.h \
@@ -29,6 +30,7 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
   /usr/include/c++/13/bits/exception.h \
   /usr/include/c++/13/bits/exception_defines.h \
   /usr/include/c++/13/bits/exception_ptr.h \
+  /usr/include/c++/13/bits/fstream.tcc \
   /usr/include/c++/13/bits/functexcept.h \
   /usr/include/c++/13/bits/functional_hash.h \
   /usr/include/c++/13/bits/hash_bytes.h \
@@ -100,6 +102,7 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
   /usr/include/c++/13/ext/numeric_traits.h \
   /usr/include/c++/13/ext/string_conversions.h \
   /usr/include/c++/13/ext/type_traits.h \
+  /usr/include/c++/13/fstream \
   /usr/include/c++/13/initializer_list \
   /usr/include/c++/13/ios \
   /usr/include/c++/13/iosfwd \
@@ -208,8 +211,10 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
   /usr/include/x86_64-linux-gnu/bits/wctype-wchar.h \
   /usr/include/x86_64-linux-gnu/bits/wordsize.h \
   /usr/include/x86_64-linux-gnu/c++/13/bits/atomic_word.h \
+  /usr/include/x86_64-linux-gnu/c++/13/bits/basic_file.h \
   /usr/include/x86_64-linux-gnu/c++/13/bits/c++allocator.h \
   /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
+  /usr/include/x86_64-linux-gnu/c++/13/bits/c++io.h \
   /usr/include/x86_64-linux-gnu/c++/13/bits/c++locale.h \
   /usr/include/x86_64-linux-gnu/c++/13/bits/cpu_defines.h \
   /usr/include/x86_64-linux-gnu/c++/13/bits/ctype_base.h \
@@ -262,6 +267,10 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 /usr/include/x86_64-linux-gnu/c++/13/bits/ctype_inline.h:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/ctype_base.h:
+
+/usr/include/x86_64-linux-gnu/c++/13/bits/c++io.h:
+
+/usr/include/x86_64-linux-gnu/c++/13/bits/basic_file.h:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/atomic_word.h:
 
@@ -359,17 +368,19 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 
 /usr/include/sched.h:
 
+/usr/include/pthread.h:
+
 /usr/include/c++/13/bits/shared_ptr_atomic.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h:
 
 /usr/include/c++/13/bits/refwrap.h:
 
+/usr/include/c++/13/bits/fstream.tcc:
+
 /usr/include/c++/13/debug/debug.h:
 
 /usr/include/c++/13/stdexcept:
-
-/usr/include/c++/13/bits/stl_algobase.h:
 
 /usr/include/x86_64-linux-gnu/bits/struct_rwlock.h:
 
@@ -378,6 +389,8 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 /usr/include/x86_64-linux-gnu/sys/types.h:
 
 /usr/include/c++/13/bits/random.h:
+
+/usr/include/c++/13/bits/codecvt.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h:
 
@@ -417,9 +430,11 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 
 /usr/include/c++/13/bits/ios_base.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
+/usr/include/c++/13/ios:
 
-/usr/include/c++/13/bits/stl_algo.h:
+/usr/include/x86_64-linux-gnu/bits/fp-logb.h:
+
+/usr/include/c++/13/bits/algorithmfwd.h:
 
 /workspaces/codespaces-blank/Simple-ray-tracer/main.cpp:
 
@@ -427,11 +442,23 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 
 /usr/include/c++/13/type_traits:
 
+/usr/include/c++/13/bits/alloc_traits.h:
+
+/usr/include/c++/13/bits/concept_check.h:
+
 /usr/include/x86_64-linux-gnu/c++/13/bits/gthr.h:
 
 /usr/include/c++/13/bits/basic_ios.tcc:
 
 /usr/include/c++/13/bits/nested_exception.h:
+
+/workspaces/codespaces-blank/Simple-ray-tracer/hittable.h:
+
+/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
+
+/usr/include/locale.h:
+
+/usr/include/c++/13/ext/aligned_buffer.h:
 
 /usr/include/c++/13/bits/locale_facets.tcc:
 
@@ -448,14 +475,6 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 /usr/include/c++/13/bits/stringfwd.h:
 
 /usr/include/c++/13/bits/uniform_int_dist.h:
-
-/workspaces/codespaces-blank/Simple-ray-tracer/hittable.h:
-
-/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
-
-/usr/include/c++/13/ext/aligned_buffer.h:
-
-/usr/include/locale.h:
 
 /usr/include/c++/13/bits/istream.tcc:
 
@@ -507,6 +526,10 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 
 /usr/include/c++/13/bits/localefwd.h:
 
+/usr/include/math.h:
+
+/usr/include/c++/13/bits/exception_defines.h:
+
 /usr/include/c++/13/bits/locale_facets.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
@@ -543,15 +566,11 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 
 /usr/include/c++/13/bits/exception.h:
 
-/usr/include/c++/13/bits/concept_check.h:
+/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
 
-/usr/include/c++/13/bits/alloc_traits.h:
+/usr/include/c++/13/bits/stl_algo.h:
 
-/usr/include/x86_64-linux-gnu/bits/fp-logb.h:
-
-/usr/include/c++/13/bits/algorithmfwd.h:
-
-/usr/include/c++/13/ios:
+/usr/include/c++/13/bits/stl_algobase.h:
 
 /usr/include/c++/13/bits/allocator.h:
 
@@ -641,6 +660,8 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
 
+/usr/include/c++/13/fstream:
+
 /usr/include/c++/13/bits/charconv.h:
 
 /usr/include/c++/13/bits/stl_pair.h:
@@ -703,10 +724,6 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 
 /usr/include/c++/13/vector:
 
-/usr/include/c++/13/bits/exception_defines.h:
-
-/usr/include/math.h:
-
 /usr/include/c++/13/bits/streambuf.tcc:
 
 /usr/include/endian.h:
@@ -714,5 +731,3 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h:
 
 /usr/include/linux/errno.h:
-
-/usr/include/pthread.h:
