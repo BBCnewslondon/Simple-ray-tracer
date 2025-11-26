@@ -1,0 +1,4 @@
+/workspaces/codespaces-blank/Simple-ray-tracer/CMakeFiles/blackhole.dir
+/workspaces/codespaces-blank/Simple-ray-tracer/CMakeFiles/nbody.dir
+/workspaces/codespaces-blank/Simple-ray-tracer/CMakeFiles/edit_cache.dir
+/workspaces/codespaces-blank/Simple-ray-tracer/CMakeFiles/rebuild_cache.dir
