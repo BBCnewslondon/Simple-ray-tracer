@@ -13,6 +13,7 @@
 #include <vector>
 #include <memory>
 #include <omp.h>
+#include <algorithm>
 
 color ray_color(const ray& r, const std::vector<std::shared_ptr<hittable>>& world, const black_hole& bh, int depth) {
     // If we've exceeded the ray bounce limit, no more light is gathered.
@@ -75,8 +76,15 @@ color ray_color(const ray& r, const std::vector<std::shared_ptr<hittable>>& worl
     }
 
     vec3 unit_direction = curr_dir;
-    auto t = 0.5*(unit_direction.y() + 1.0);
-    return (1.0-t)*color(1.0, 1.0, 1.0) + t*color(0.5, 0.7, 1.0);
+    auto u = 0.5 + atan2(unit_direction.z(), unit_direction.x()) / (2*3.14159);
+    auto v = 0.5 - asin(unit_direction.y()) / 3.14159;
+
+    // Create a checkerboard pattern
+    if (sin(u * 50) * sin(v * 50) > 0) {
+        return color(0, 0, 0); // Black square
+    } else {
+        return color(1, 1, 1); // White square
+    }
 }
 
 int main() {

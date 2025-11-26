@@ -194,4 +194,7 @@ CMakeFiles/hello.dir/main.cpp.o: \
  /workspaces/codespaces-blank/Simple-ray-tracer/metal.h \
  /workspaces/codespaces-blank/Simple-ray-tracer/dielectric.h \
  /workspaces/codespaces-blank/Simple-ray-tracer/black_hole.h \
- /usr/lib/gcc/x86_64-linux-gnu/13/include/omp.h
+ /usr/lib/gcc/x86_64-linux-gnu/13/include/omp.h \
+ /usr/include/c++/13/algorithm /usr/include/c++/13/bits/stl_algo.h \
+ /usr/include/c++/13/bits/algorithmfwd.h \
+ /usr/include/c++/13/bits/stl_heap.h
