@@ -14,6 +14,7 @@
 #include <memory>
 #include <omp.h>
 #include <algorithm>
+#include <fstream>
 
 color ray_color(const ray& r, const std::vector<std::shared_ptr<hittable>>& world, const black_hole& bh, int depth) {
     if (depth <= 0) return color(0,0,0);
@@ -156,28 +157,6 @@ int main() {
     const int image_width = 400;
     const int image_height = static_cast<int>(image_width / aspect_ratio);
 
-    // Camera
-    auto lookfrom = point3(0,0,0);
-    auto lookat = point3(0,0,-1);
-    auto vup = vec3(0,1,0);
-    auto vfov = 90.0;
-    auto aperture = 0.1;
-    auto focus_dist = 1.0;
-
-    auto theta = degrees_to_radians(vfov);
-    auto h = tan(theta/2);
-    auto viewport_height = 2.0 * h * focus_dist;
-    auto viewport_width = aspect_ratio * viewport_height;
-
-    auto w = unit_vector(lookfrom - lookat);
-    auto u = unit_vector(cross(vup, w));
-    auto v = cross(w, u);
-
-    auto origin = lookfrom;
-    auto horizontal = focus_dist * viewport_width * u;
-    auto vertical = focus_dist * viewport_height * v;
-    auto lower_left_corner = origin - horizontal/2 - vertical/2 - focus_dist * w;
-
     // World
     std::vector<std::shared_ptr<hittable>> world;
 
@@ -193,26 +172,65 @@ int main() {
     world.push_back(std::make_shared<sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_left));
     world.push_back(std::make_shared<sphere>(point3( 1.0,    0.0, -1.0),   0.5, material_right));
 
-    // Render
-    std::vector<color> pixels(image_width * image_height);
+    // Camera constants
+    auto lookat = bh.center; // Look at the black hole
+    auto vup = vec3(0,1,0);
+    auto vfov = 90.0;
+    auto aperture = 0.1;
+    auto focus_dist = 1.0;
 
-    std::cout << "P3\n" << image_width << " " << image_height << "\n255\n";
+    const int total_frames = 120;
+    for (int frame = 0; frame < total_frames; frame++) {
+        
+        // Physics of the Orbit
+        double r_orbit = 10.0;
+        double angle = 2.0 * 3.141592653589793 * (double(frame) / total_frames);
+        
+        // Update Camera Position
+        auto lookfrom = point3(r_orbit * sin(angle), 1.0, r_orbit * cos(angle));
+        
+        // Recalculate camera vectors
+        auto theta = degrees_to_radians(vfov);
+        auto h = tan(theta/2);
+        auto viewport_height = 2.0 * h * focus_dist;
+        auto viewport_width = aspect_ratio * viewport_height;
+
+        auto w = unit_vector(lookfrom - lookat);
+        auto u = unit_vector(cross(vup, w));
+        auto v = cross(w, u);
+
+        auto origin = lookfrom;
+        auto horizontal = focus_dist * viewport_width * u;
+        auto vertical = focus_dist * viewport_height * v;
+        auto lower_left_corner = origin - horizontal/2 - vertical/2 - focus_dist * w;
+
+        // Render
+        std::vector<color> pixels(image_width * image_height);
+
+        std::string filename = "render_" + std::to_string(frame) + ".ppm";
+        std::ofstream out(filename);
+        out << "P3\n" << image_width << " " << image_height << "\n255\n";
 
 #pragma omp parallel for schedule(dynamic)
-    for (int j = image_height-1; j >= 0; --j) {
-        for (int i = 0; i < image_width; ++i) {
-            auto rd = random_in_unit_disk() * (aperture / 2);
-            auto offset = u * rd.x() + v * rd.y();
-            auto dir = lower_left_corner + (double(i)/(image_width-1))*horizontal + (double(j)/(image_height-1))*vertical - origin - offset;
-            ray r(origin + offset, dir);
-            color pixel_color = ray_color(r, world, bh, 50);
-            pixels[j * image_width + i] = pixel_color;
+        for (int j = image_height-1; j >= 0; --j) {
+            for (int i = 0; i < image_width; ++i) {
+                auto rd = random_in_unit_disk() * (aperture / 2);
+                auto offset = u * rd.x() + v * rd.y();
+                auto dir = lower_left_corner + (double(i)/(image_width-1))*horizontal + (double(j)/(image_height-1))*vertical - origin - offset;
+                ray r(origin + offset, dir);
+                color pixel_color = ray_color(r, world, bh, 50);
+                pixels[j * image_width + i] = pixel_color;
+            }
         }
+
+        for (const auto& c : pixels) {
+            write_color(out, c);
+        }
+
+        out.close();
+
+        std::cerr << "Frame " << frame << " done.\n";
     }
 
-    for (const auto& c : pixels) {
-        write_color(std::cout, c);
-    }
-
-    std::cerr << "\nDone.\n";
+    std::cerr << "\nAll done.\n";
 }
