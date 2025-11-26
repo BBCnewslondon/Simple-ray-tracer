@@ -5,9 +5,11 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
   /usr/include/alloca.h \
   /usr/include/asm-generic/errno-base.h \
   /usr/include/asm-generic/errno.h \
+  /usr/include/c++/13/algorithm \
   /usr/include/c++/13/backward/auto_ptr.h \
   /usr/include/c++/13/backward/binders.h \
   /usr/include/c++/13/bit \
+  /usr/include/c++/13/bits/algorithmfwd.h \
   /usr/include/c++/13/bits/align.h \
   /usr/include/c++/13/bits/alloc_traits.h \
   /usr/include/c++/13/bits/allocated_ptr.h \
@@ -56,10 +58,12 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
   /usr/include/c++/13/bits/shared_ptr_atomic.h \
   /usr/include/c++/13/bits/shared_ptr_base.h \
   /usr/include/c++/13/bits/std_abs.h \
+  /usr/include/c++/13/bits/stl_algo.h \
   /usr/include/c++/13/bits/stl_algobase.h \
   /usr/include/c++/13/bits/stl_bvector.h \
   /usr/include/c++/13/bits/stl_construct.h \
   /usr/include/c++/13/bits/stl_function.h \
+  /usr/include/c++/13/bits/stl_heap.h \
   /usr/include/c++/13/bits/stl_iterator.h \
   /usr/include/c++/13/bits/stl_iterator_base_funcs.h \
   /usr/include/c++/13/bits/stl_iterator_base_types.h \
@@ -271,8 +275,6 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
 
-/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
-
 /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
 
 /usr/include/x86_64-linux-gnu/bits/wctype-wchar.h:
@@ -325,8 +327,6 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 
 /usr/include/x86_64-linux-gnu/bits/iscanonical.h:
 
-/usr/include/x86_64-linux-gnu/bits/fp-logb.h:
-
 /usr/include/x86_64-linux-gnu/bits/fp-fast.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/wint_t.h:
@@ -349,7 +349,15 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 
 /usr/include/stdlib.h:
 
-/usr/include/c++/13/bits/stl_construct.h:
+/workspaces/codespaces-blank/Simple-ray-tracer/material.h:
+
+/usr/include/stdio.h:
+
+/usr/include/stdint.h:
+
+/usr/include/stdc-predef.h:
+
+/usr/include/sched.h:
 
 /usr/include/c++/13/bits/shared_ptr_atomic.h:
 
@@ -409,7 +417,9 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 
 /usr/include/c++/13/bits/ios_base.h:
 
-/usr/include/c++/13/bits/move.h:
+/usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
+
+/usr/include/c++/13/bits/stl_algo.h:
 
 /workspaces/codespaces-blank/Simple-ray-tracer/main.cpp:
 
@@ -417,17 +427,11 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 
 /usr/include/c++/13/type_traits:
 
-/usr/include/x86_64-linux-gnu/bits/flt-eval-method.h:
+/usr/include/x86_64-linux-gnu/c++/13/bits/gthr.h:
 
-/usr/include/c++/13/bits/localefwd.h:
+/usr/include/c++/13/bits/basic_ios.tcc:
 
-/usr/include/c++/13/bits/locale_facets.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
-
-/usr/include/x86_64-linux-gnu/asm/errno.h:
-
-/usr/include/c++/13/bits/atomic_lockfree_defines.h:
+/usr/include/c++/13/bits/nested_exception.h:
 
 /usr/include/c++/13/bits/locale_facets.tcc:
 
@@ -445,11 +449,13 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 
 /usr/include/c++/13/bits/uniform_int_dist.h:
 
-/usr/include/c++/13/bits/nested_exception.h:
+/workspaces/codespaces-blank/Simple-ray-tracer/hittable.h:
 
-/usr/include/x86_64-linux-gnu/c++/13/bits/gthr.h:
+/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
 
-/usr/include/c++/13/bits/basic_ios.tcc:
+/usr/include/c++/13/ext/aligned_buffer.h:
+
+/usr/include/locale.h:
 
 /usr/include/c++/13/bits/istream.tcc:
 
@@ -481,19 +487,33 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 
 /usr/include/c++/13/bits/basic_string.tcc:
 
-/usr/include/c++/13/bits/allocator.h:
+/usr/include/c++/13/algorithm:
 
-/usr/include/c++/13/bits/stl_bvector.h:
+/usr/include/x86_64-linux-gnu/bits/types/error_t.h:
+
+/usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h:
+
+/usr/include/c++/13/bits/stl_raw_storage_iter.h:
+
+/usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h:
+
+/usr/include/x86_64-linux-gnu/c++/13/bits/c++locale.h:
+
+/usr/include/c++/13/bits/ptr_traits.h:
 
 /usr/include/c++/13/backward/auto_ptr.h:
 
-/workspaces/codespaces-blank/Simple-ray-tracer/hittable.h:
+/usr/include/x86_64-linux-gnu/bits/flt-eval-method.h:
 
-/usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
+/usr/include/c++/13/bits/localefwd.h:
 
-/usr/include/locale.h:
+/usr/include/c++/13/bits/locale_facets.h:
 
-/usr/include/c++/13/ext/aligned_buffer.h:
+/usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
+
+/usr/include/x86_64-linux-gnu/asm/errno.h:
+
+/usr/include/c++/13/bits/atomic_lockfree_defines.h:
 
 /usr/include/c++/13/bits/invoke.h:
 
@@ -505,13 +525,7 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 
 /usr/include/c++/13/bits/basic_string.h:
 
-/usr/include/stdc-predef.h:
-
-/usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h:
-
-/usr/include/x86_64-linux-gnu/c++/13/bits/c++locale.h:
-
-/usr/include/c++/13/bits/ptr_traits.h:
+/usr/include/c++/13/bits/move.h:
 
 /usr/include/x86_64-linux-gnu/bits/types.h:
 
@@ -533,7 +547,23 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 
 /usr/include/c++/13/bits/alloc_traits.h:
 
+/usr/include/x86_64-linux-gnu/bits/fp-logb.h:
+
+/usr/include/c++/13/bits/algorithmfwd.h:
+
 /usr/include/c++/13/ios:
+
+/usr/include/c++/13/bits/allocator.h:
+
+/usr/include/c++/13/bits/stl_bvector.h:
+
+/usr/include/c++/13/bits/stl_construct.h:
+
+/usr/include/c++/13/bits/stl_heap.h:
+
+/usr/include/c++/13/ext/alloc_traits.h:
+
+/usr/include/c++/13/new:
 
 /usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
 
@@ -554,12 +584,6 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 /usr/include/x86_64-linux-gnu/bits/types/time_t.h:
 
 /usr/include/c++/13/bits/stl_numeric.h:
-
-/usr/include/x86_64-linux-gnu/bits/types/error_t.h:
-
-/usr/include/x86_64-linux-gnu/bits/mathcalls-helper-functions.h:
-
-/usr/include/c++/13/bits/stl_raw_storage_iter.h:
 
 /usr/include/c++/13/bits/stl_uninitialized.h:
 
@@ -602,10 +626,6 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 /usr/include/x86_64-linux-gnu/bits/stdint-least.h:
 
 /usr/include/c++/13/cerrno:
-
-/workspaces/codespaces-blank/Simple-ray-tracer/material.h:
-
-/usr/include/stdio.h:
 
 /usr/include/c++/13/bits/allocated_ptr.h:
 
@@ -667,10 +687,6 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 
 /usr/include/c++/13/limits:
 
-/usr/include/c++/13/ext/alloc_traits.h:
-
-/usr/include/c++/13/new:
-
 /workspaces/codespaces-blank/Simple-ray-tracer/dielectric.h:
 
 /usr/include/c++/13/numeric:
@@ -700,7 +716,3 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/Simple-ray-tracer/
 /usr/include/linux/errno.h:
 
 /usr/include/pthread.h:
-
-/usr/include/sched.h:
-
-/usr/include/stdint.h:

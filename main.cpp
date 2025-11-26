@@ -21,14 +21,35 @@ color ray_color(const ray& r, const std::vector<std::shared_ptr<hittable>>& worl
         return color(0,0,0);
 
     // Ray marching parameters
-    double dt = 0.05; 
     double max_dist = 100.0;
     double current_dist = 0.0;
     
     point3 curr_pos = r.origin();
     vec3 curr_dir = unit_vector(r.direction());
     
+    color accumulated_color(0,0,0);
+    
     while (current_dist < max_dist) {
+        double dist_to_hole = (curr_pos - bh.center).length();
+        
+        // Adaptive Step:
+        // 1. Move fast (0.5) when far away
+        // 2. Move slow (0.01) when close
+        // 3. Never stop completely (std::max)
+        double dt = std::max(0.01, dist_to_hole / 10.0);
+        
+        // Check for accretion disk
+        double disk_radius = 2.0;
+        double disk_height = 0.1;
+        vec3 to_center = curr_pos - bh.center;
+        double r = sqrt(to_center.x()*to_center.x() + to_center.z()*to_center.z());
+        double h = abs(to_center.y());
+        if (r < disk_radius && h < disk_height && dist_to_hole > bh.rs) {
+            double density = 1.0 / (dist_to_hole * dist_to_hole);
+            color glowing_plasma(1.0, 0.5, 0.0);
+            accumulated_color += glowing_plasma * density * dt;
+        }
+        
         // Check for intersection in this step
         hit_record rec;
         bool hit_anything = false;
@@ -80,11 +101,18 @@ color ray_color(const ray& r, const std::vector<std::shared_ptr<hittable>>& worl
     auto v = 0.5 - asin(unit_direction.y()) / 3.14159;
 
     // Create a checkerboard pattern
+    color background;
     if (sin(u * 50) * sin(v * 50) > 0) {
-        return color(0, 0, 0); // Black square
+        background = color(0, 0, 0); // Black square
     } else {
-        return color(1, 1, 1); // White square
+        background = color(1, 1, 1); // White square
     }
+    
+    color final_color = accumulated_color + background;
+    final_color[0] = std::min(1.0, std::max(0.0, final_color[0]));
+    final_color[1] = std::min(1.0, std::max(0.0, final_color[1]));
+    final_color[2] = std::min(1.0, std::max(0.0, final_color[2]));
+    return final_color;
 }
 
 int main() {
