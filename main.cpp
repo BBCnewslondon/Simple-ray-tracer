@@ -16,40 +16,19 @@
 #include <algorithm>
 
 color ray_color(const ray& r, const std::vector<std::shared_ptr<hittable>>& world, const black_hole& bh, int depth) {
-    // If we've exceeded the ray bounce limit, no more light is gathered.
-    if (depth <= 0)
-        return color(0,0,0);
+    if (depth <= 0) return color(0,0,0);
 
-    // Ray marching parameters
+    double dt = 0.05; 
     double max_dist = 100.0;
     double current_dist = 0.0;
     
     point3 curr_pos = r.origin();
     vec3 curr_dir = unit_vector(r.direction());
-    
-    color accumulated_color(0,0,0);
-    
+
+    // NEW: Accumulator for the glowing gas
+    color glow(0,0,0); 
+
     while (current_dist < max_dist) {
-        double dist_to_hole = (curr_pos - bh.center).length();
-        
-        // Adaptive Step:
-        // 1. Move fast (0.5) when far away
-        // 2. Move slow (0.01) when close
-        // 3. Never stop completely (std::max)
-        double dt = std::max(0.01, dist_to_hole / 10.0);
-        
-        // Check for accretion disk
-        double disk_radius = 2.0;
-        double disk_height = 0.1;
-        vec3 to_center = curr_pos - bh.center;
-        double r = sqrt(to_center.x()*to_center.x() + to_center.z()*to_center.z());
-        double h = abs(to_center.y());
-        if (r < disk_radius && h < disk_height && dist_to_hole > bh.rs) {
-            double density = 1.0 / (dist_to_hole * dist_to_hole);
-            color glowing_plasma(1.0, 0.5, 0.0);
-            accumulated_color += glowing_plasma * density * dt;
-        }
-        
         // Check for intersection in this step
         hit_record rec;
         bool hit_anything = false;
@@ -64,20 +43,62 @@ color ray_color(const ray& r, const std::vector<std::shared_ptr<hittable>>& worl
             }
         }
         
+        // If we hit a solid object (planet), return its color PLUS the glow we accumulated so far
         if (hit_anything) {
             ray scattered;
             color attenuation;
-            if (rec.mat_ptr->scatter(step_ray, rec, attenuation, scattered))
-                return attenuation * ray_color(scattered, world, bh, depth-1);
-            return color(0,0,0);
+            if (rec.mat_ptr->scatter(step_ray, rec, attenuation, scattered)) {
+                color result = glow + attenuation * ray_color(scattered, world, bh, depth-1);
+                result[0] = std::min(1.0, std::max(0.0, result[0]));
+                result[1] = std::min(1.0, std::max(0.0, result[1]));
+                result[2] = std::min(1.0, std::max(0.0, result[2]));
+                return result;
+            }
+            color result = glow;
+            result[0] = std::min(1.0, std::max(0.0, result[0]));
+            result[1] = std::min(1.0, std::max(0.0, result[1]));
+            result[2] = std::min(1.0, std::max(0.0, result[2]));
+            return result;
+        }
+
+        double dist_to_hole = (curr_pos - bh.center).length();
+
+        // ---------------------------------------------------------
+        // NEW: Accretion Disk Physics
+        // ---------------------------------------------------------
+        // Define the disk: A flat region in XZ plane (y ~ 0)
+        // Inner Radius: 2.6 * Rs (ISCO - Innermost Stable Circular Orbit)
+        // Outer Radius: 12.0 * Rs
+        double disk_height = 0.5;
+        double inner_radius = 2.6 * bh.rs;
+        double outer_radius = 12.0 * bh.rs;
+
+        // Check if ray is physically inside the disk volume
+        if (std::abs(curr_pos.y() - bh.center.y()) < disk_height && 
+            dist_to_hole > inner_radius && 
+            dist_to_hole < outer_radius) {
+            
+            // Gas Density: Hotter and denser near the center (1/r^2 falloff)
+            double density = 1.0 / (dist_to_hole * dist_to_hole);
+            
+            // Color: "Blackbody" Orange (High Red/Green, Low Blue)
+            color disk_color(1.0, 0.5, 0.1); 
+
+            // Accumulate light: Color * Density * StepSize
+            glow += disk_color * density * dt * 20.0; // *20 is an intensity multiplier
+        }
+        // ---------------------------------------------------------
+
+        if (dist_to_hole < bh.rs) {
+            color result = glow;
+            result[0] = std::min(1.0, std::max(0.0, result[0]));
+            result[1] = std::min(1.0, std::max(0.0, result[1]));
+            result[2] = std::min(1.0, std::max(0.0, result[2]));
+            return result; // Return just the glow (the hole itself is black)
         }
         
-        // Check if we hit the black hole event horizon
-        if ((curr_pos - bh.center).length() < bh.rs) {
-            return color(0,0,0); 
-        }
-        
-        // Update position
+        // Adaptive Step and Gravity Logic
+        dt = std::max(0.01, dist_to_hole / 10.0); 
         curr_pos += curr_dir * dt;
         current_dist += dt;
         
@@ -96,19 +117,14 @@ color ray_color(const ray& r, const std::vector<std::shared_ptr<hittable>>& worl
         }
     }
 
+    // Background (Checkerboard)
     vec3 unit_direction = curr_dir;
     auto u = 0.5 + atan2(unit_direction.z(), unit_direction.x()) / (2*3.14159);
     auto v = 0.5 - asin(unit_direction.y()) / 3.14159;
-
-    // Create a checkerboard pattern
-    color background;
-    if (sin(u * 50) * sin(v * 50) > 0) {
-        background = color(0, 0, 0); // Black square
-    } else {
-        background = color(1, 1, 1); // White square
-    }
     
-    color final_color = accumulated_color + background;
+    color bg_color = (sin(u * 50) * sin(v * 50) > 0) ? color(0,0,0) : color(1,1,1);
+    
+    color final_color = glow + bg_color;
     final_color[0] = std::min(1.0, std::max(0.0, final_color[0]));
     final_color[1] = std::min(1.0, std::max(0.0, final_color[1]));
     final_color[2] = std::min(1.0, std::max(0.0, final_color[2]));
