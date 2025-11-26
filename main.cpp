@@ -64,7 +64,7 @@ color ray_color(const ray& r, const std::vector<std::shared_ptr<hittable>>& worl
         double dist_to_hole = (curr_pos - bh.center).length();
 
         // ---------------------------------------------------------
-        // NEW: Accretion Disk Physics
+        // NEW: Relativistic Accretion Disk
         // ---------------------------------------------------------
         // Define the disk: A flat region in XZ plane (y ~ 0)
         // Inner Radius: 2.6 * Rs (ISCO - Innermost Stable Circular Orbit)
@@ -73,19 +73,37 @@ color ray_color(const ray& r, const std::vector<std::shared_ptr<hittable>>& worl
         double inner_radius = 2.6 * bh.rs;
         double outer_radius = 12.0 * bh.rs;
 
-        // Check if ray is physically inside the disk volume
         if (std::abs(curr_pos.y() - bh.center.y()) < disk_height && 
             dist_to_hole > inner_radius && 
             dist_to_hole < outer_radius) {
             
-            // Gas Density: Hotter and denser near the center (1/r^2 falloff)
-            double density = 1.0 / (dist_to_hole * dist_to_hole);
-            
-            // Color: "Blackbody" Orange (High Red/Green, Low Blue)
-            color disk_color(1.0, 0.5, 0.1); 
+            // 1. Calculate Velocity Direction of the gas (Tangential)
+            // We assume the disk rotates counter-clockwise around the Y axis
+            vec3 radial_vector = curr_pos - bh.center;
+            radial_vector.e[1] = 0; // Project to flat plane
+            vec3 up_vector(0, 1, 0);
+            vec3 velocity_dir = unit_vector(cross(up_vector, radial_vector));
 
-            // Accumulate light: Color * Density * StepSize
-            glow += disk_color * density * dt * 20.0; // *20 is an intensity multiplier
+            // 2. Relativistic Beaming (Doppler Shift)
+            // 'curr_dir' is the ray traveling FROM camera TO black hole.
+            // If gas moves TOWARDS camera, it opposes the ray direction.
+            // Dot product will be negative -> We want this to be BRIGHTER.
+            double speed = 0.5; // Gas moving at 0.5c
+            double beam_factor = 1.0 - speed * dot(velocity_dir, curr_dir);
+            
+            // Raise to a power to exaggerate the effect (simulate D^3 or D^4)
+            beam_factor = std::pow(beam_factor, 3.0);
+            
+            // 3. Calculate Color & Density
+            double density = 1.0 / (dist_to_hole * dist_to_hole);
+            color disk_color(1.0, 0.5, 0.1); 
+            
+            // Optional: Redshift/Blueshift the color slightly
+            if (beam_factor > 1.0) disk_color = color(0.6, 0.8, 1.0); // Blue-ish for fast approaching
+            else disk_color = color(1.0, 0.2, 0.0); // Red-ish for receding
+
+            // 4. Accumulate
+            glow += disk_color * density * beam_factor * dt * 20.0;
         }
         // ---------------------------------------------------------
 
