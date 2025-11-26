@@ -1,5 +1,7 @@
-CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/main.cpp \
- /usr/include/stdc-predef.h /workspaces/codespaces-blank/vec3.h \
+CMakeFiles/hello.dir/main.cpp.o: \
+ /workspaces/codespaces-blank/Simple-ray-tracer/main.cpp \
+ /usr/include/stdc-predef.h \
+ /workspaces/codespaces-blank/Simple-ray-tracer/vec3.h \
  /usr/include/c++/13/cmath /usr/include/c++/13/bits/requires_hosted.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
@@ -169,11 +171,11 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/main.cpp \
  /usr/include/x86_64-linux-gnu/c++/13/bits/opt_random.h \
  /usr/include/c++/13/bits/random.tcc /usr/include/c++/13/numeric \
  /usr/include/c++/13/bits/stl_numeric.h \
- /workspaces/codespaces-blank/color.h \
- /workspaces/codespaces-blank/sphere.h \
- /workspaces/codespaces-blank/hittable.h \
- /workspaces/codespaces-blank/ray.h /usr/include/c++/13/memory \
- /usr/include/c++/13/bits/stl_tempbuf.h \
+ /workspaces/codespaces-blank/Simple-ray-tracer/color.h \
+ /workspaces/codespaces-blank/Simple-ray-tracer/sphere.h \
+ /workspaces/codespaces-blank/Simple-ray-tracer/hittable.h \
+ /workspaces/codespaces-blank/Simple-ray-tracer/ray.h \
+ /usr/include/c++/13/memory /usr/include/c++/13/bits/stl_tempbuf.h \
  /usr/include/c++/13/bits/stl_raw_storage_iter.h \
  /usr/include/c++/13/bits/align.h /usr/include/c++/13/bit \
  /usr/include/c++/13/bits/uses_allocator.h \
@@ -187,8 +189,9 @@ CMakeFiles/hello.dir/main.cpp.o: /workspaces/codespaces-blank/main.cpp \
  /usr/include/c++/13/bits/atomic_base.h \
  /usr/include/c++/13/bits/atomic_lockfree_defines.h \
  /usr/include/c++/13/backward/auto_ptr.h \
- /workspaces/codespaces-blank/material.h \
- /workspaces/codespaces-blank/lambertian.h \
- /workspaces/codespaces-blank/metal.h \
- /workspaces/codespaces-blank/dielectric.h \
+ /workspaces/codespaces-blank/Simple-ray-tracer/material.h \
+ /workspaces/codespaces-blank/Simple-ray-tracer/lambertian.h \
+ /workspaces/codespaces-blank/Simple-ray-tracer/metal.h \
+ /workspaces/codespaces-blank/Simple-ray-tracer/dielectric.h \
+ /workspaces/codespaces-blank/Simple-ray-tracer/black_hole.h \
  /usr/lib/gcc/x86_64-linux-gnu/13/include/omp.h

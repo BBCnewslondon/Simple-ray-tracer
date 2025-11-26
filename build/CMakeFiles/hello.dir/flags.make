@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/workspaces/codespaces-blank/.
+CXX_INCLUDES = -I/workspaces/codespaces-blank/Simple-ray-tracer/.
 
 CXX_FLAGS = -std=gnu++11
 

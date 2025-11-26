@@ -6,6 +6,7 @@
 #include "lambertian.h"
 #include "metal.h"
 #include "dielectric.h"
+#include "black_hole.h"
 
 #include <iostream>
 #include <limits>
@@ -13,32 +14,67 @@
 #include <memory>
 #include <omp.h>
 
-color ray_color(const ray& r, const std::vector<std::shared_ptr<hittable>>& world, int depth) {
-    hit_record rec;
-
+color ray_color(const ray& r, const std::vector<std::shared_ptr<hittable>>& world, const black_hole& bh, int depth) {
     // If we've exceeded the ray bounce limit, no more light is gathered.
     if (depth <= 0)
         return color(0,0,0);
 
-    bool hit_anything = false;
-    auto closest_so_far = 1e10;
-
-    for (const auto& object : world) {
-        if (object->hit(r, 0.001, closest_so_far, rec)) {
-            hit_anything = true;
-            closest_so_far = rec.t;
+    // Ray marching parameters
+    double dt = 0.05; 
+    double max_dist = 100.0;
+    double current_dist = 0.0;
+    
+    point3 curr_pos = r.origin();
+    vec3 curr_dir = unit_vector(r.direction());
+    
+    while (current_dist < max_dist) {
+        // Check for intersection in this step
+        hit_record rec;
+        bool hit_anything = false;
+        double closest_so_far = dt; 
+        
+        ray step_ray(curr_pos, curr_dir);
+        
+        for (const auto& object : world) {
+            if (object->hit(step_ray, 0.001, closest_so_far, rec)) {
+                hit_anything = true;
+                closest_so_far = rec.t;
+            }
+        }
+        
+        if (hit_anything) {
+            ray scattered;
+            color attenuation;
+            if (rec.mat_ptr->scatter(step_ray, rec, attenuation, scattered))
+                return attenuation * ray_color(scattered, world, bh, depth-1);
+            return color(0,0,0);
+        }
+        
+        // Check if we hit the black hole event horizon
+        if ((curr_pos - bh.center).length() < bh.rs) {
+            return color(0,0,0); 
+        }
+        
+        // Update position
+        curr_pos += curr_dir * dt;
+        current_dist += dt;
+        
+        // Update direction (Gravity)
+        vec3 to_bh = bh.center - curr_pos;
+        double dist_sq = to_bh.length_squared();
+        double dist = sqrt(dist_sq);
+        
+        if (dist > bh.rs) {
+             vec3 force_dir = unit_vector(to_bh);
+             // 2 * G * M / r^2, G=1
+             double force_mag = (2.0 * bh.mass) / dist_sq;
+             vec3 acceleration = force_dir * force_mag;
+             curr_dir += acceleration * dt;
+             curr_dir = unit_vector(curr_dir);
         }
     }
 
-    if (hit_anything) {
-        ray scattered;
-        color attenuation;
-        if (rec.mat_ptr->scatter(r, rec, attenuation, scattered))
-            return attenuation * ray_color(scattered, world, depth-1);
-        return color(0,0,0);
-    }
-
-    vec3 unit_direction = unit_vector(r.direction());
+    vec3 unit_direction = curr_dir;
     auto t = 0.5*(unit_direction.y() + 1.0);
     return (1.0-t)*color(1.0, 1.0, 1.0) + t*color(0.5, 0.7, 1.0);
 }
@@ -75,6 +111,8 @@ int main() {
     // World
     std::vector<std::shared_ptr<hittable>> world;
 
+    black_hole bh(point3(0, 1, -2), 0.3);
+
     auto material_ground = std::make_shared<lambertian>(color(0.8, 0.8, 0.0));
     auto material_center = std::make_shared<lambertian>(color(0.1, 0.2, 0.5));
     auto material_left   = std::make_shared<dielectric>(1.5);
@@ -97,7 +135,7 @@ int main() {
             auto offset = u * rd.x() + v * rd.y();
             auto dir = lower_left_corner + (double(i)/(image_width-1))*horizontal + (double(j)/(image_height-1))*vertical - origin - offset;
             ray r(origin + offset, dir);
-            color pixel_color = ray_color(r, world, 50);
+            color pixel_color = ray_color(r, world, bh, 50);
             pixels[j * image_width + i] = pixel_color;
         }
     }
